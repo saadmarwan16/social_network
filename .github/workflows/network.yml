@@ -11,10 +11,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install Dependencies
-      run: |
-        pip install --user django
-        pip install django_restframework
     - name: Run Tests
       run: |
+        pip install --user django
         python manage.py test
