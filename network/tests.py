@@ -69,20 +69,20 @@ class ModelsTestCase(TestCase):
         num_of_posts = Post.objects.filter(poster=user).count()
         self.assertEqual(num_of_posts, 1)
 
-    def test_index_page(self):
-        c = Client()
-        response = c.get("/")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["page_object"].count(), 4)
+    # def test_index_page(self):
+    #     c = Client()
+    #     response = c.get("/")
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.context["page_object"].count(), 4)
 
-    def test_valid_profile_page(self):
-        user = User.objects.get(username="foo")
-        posts = Post.objects.filter(poster=user.id)
+    # def test_valid_profile_page(self):
+    #     user = User.objects.get(username="foo")
+    #     posts = Post.objects.filter(poster=user.id)
 
-        c = Client()
-        response = c.get(f"/profile/{user.id}")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["posts"].count(), 1)
+    #     c = Client()
+    #     response = c.get(f"/profile/{user.id}")
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.context["posts"].count(), 1)
 
     def test_invalid_profile_page(self):
         max_id = User.objects.all().aggregate(Max("id"))["id__max"]
