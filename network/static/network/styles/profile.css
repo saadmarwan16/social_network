@@ -1,0 +1,58 @@
+.single-profile-row {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.single-profile, .followers, .following, .posts {
+    padding: 0px;
+    cursor: pointer;
+}
+
+.single-profile, .posts, .followers, .following {
+    border-right: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.single-profile-jumb, .followers-jumb, .following-jumb, .posts-jumb {
+    padding: 10px;
+    margin: 0px;
+    text-align: center;
+    font-size: 20px;
+}
+
+#posts-view, #profile-view, #followers-view, #following-view, #successful-view {
+    display: none;
+}
+
+.password-changed {
+    color:  rgb(10, 95, 10);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* .follow {
+    font-weight: bold;
+    font-size: 20px;
+} */
+
+.follow, .single-heading {
+    /* display: flex; */
+    margin: 15px 25px;
+}
+
+.profile-num {
+    margin-left: 5px;
+    font-size: 13px;
+}
+
+/* .pwd-match-times {
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgba(255, 16, 16, 0.5);
+    color:rgb(95, 10, 10)
+}
+
+.pwd-match-check {
+    font-weight: bold;
+    font-size: 18px;
+    background-color: rgba(16, 207, 16, 0.5);;
+    color:rgb(10, 95, 10)
+} */

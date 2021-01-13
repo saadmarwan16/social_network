@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social Network{% endblock %}</title>
+
+        <link href="{% static 'network/logo/favicon.ico' %}" rel="icon">
+
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <link href="{% static 'network/styles/styles.css' %}" rel="stylesheet">
+        <link href="{% static 'network/styles/logo.css' %}" rel="stylesheet">
+        <link href="{% static 'network/styles/nav.css' %}" rel="stylesheet">
+        <link href="{% static 'network/styles/profile.css' %}" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="jumbotron" style="padding: 0.25rem; margin-bottom: 0px">
+            <div class="logo-container">
+                <a title="Home" class="logo" href="{% url 'index' %}">
+                    <div class="logo-image-container">
+                        <img class="logo-image" src="{% static 'network/logo/favicon.ico' %}">
+                    </div>
+    
+                    <div class="brand-name">
+                        Network
+                    </div>
+                </a>
+            </div>
+            <div class="user">
+                {% if user.is_authenticated %}
+                    <a title="My profile" class="profile" href="{% url 'user_profile' %}">
+                        <i class="material-icons" style="font-size: 35px;">person</i>
+                        <span>Signed in as {{ user.username }}</span>
+                    </a>
+                {% else %}
+                    <a title="Login" class="profile" href="{% url 'user_profile' %}">
+                        <i class="material-icons" style="font-size: 35px;">person</i>
+                        <span>Not signed in</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position: sticky; top: 0; z-index: 1;">
+            <div style="width: 100%">
+                <ul class="navbar-nav mr-auto" style="display: inline-block;">
+                    <li class="nav-item all-posts">
+                        <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item index-following">
+                            <a class="nav-link" href="{% url 'following' %}">Following</a>
+                        </li>
+                    {% endif %}
+                </ul>
+        
+                <ul class="navbar-nav mr-auto" style="display: block; float: right;">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item logout">
+                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item login">
+                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                        </li>
+                        <li class="nav-item register">
+                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        <div class="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
