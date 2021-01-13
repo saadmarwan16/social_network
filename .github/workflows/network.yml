@@ -13,5 +13,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run Tests
       run: |
-        pip install --user django
-        python manage.py test
+        pip3 install --user django
+        python3 manage.py test
