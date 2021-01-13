@@ -1,0 +1,179 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block styles %}
+    <link href="{% static 'network/styles/logo.css' %}" rel="stylesheet">
+    <link href="{% static 'network/styles/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'network/scripts/profile.js' %}"></script>
+    <script src="{% static 'network/scripts/like.js' %}"></script>
+    <script src="{% static 'network/scripts/main.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row single-profile-row">
+            <div class="col-4 posts">
+                <div class="jumbotron posts-jumb" id="single-posts">Posts<small class="profile-num">{{ posts_count }}</small></div>
+            </div>
+            <div class="col-4 followers">
+                <div class="jumbotron followers-jumb" id="single-followers">Followers<small class="profile-num">{{ followers_count }}</small></div>
+            </div>
+            <div class="col-4 following">
+                <div class="jumbotron following-jumb" id="single-following">Following<small class="profile-num">{{ followee_count }}</small></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="posts-view">
+        <h3 class="single-heading">Posts</h3>
+
+        {% for post in page_object %}
+            <div class="jumbotron all-posts-jumbotron" id="{{ post.id }}">
+                <a title="My profile" href="#" class="poster-container">
+                    <i class="material-icons poster-image">person</i>
+                    <span class="poster">Posted by {{ post.poster }}</span>
+                </a>
+
+                <div class="edit-timestamp">
+                    {% if user == post.poster %}
+                        <span style="margin-right: 5px;"><a href="#">Edit</a></span>
+                    {% endif %}
+                    <span>{{ post.timestamp }}</span>
+                </div>
+
+                <div class="jumbotron content">{{ post.content }}</div>
+
+                <div class="likes-comments">
+                    <span class="likes">
+                        <span class="likes">
+                            <span class="like-status">
+                                <a class="unlike-link">
+                                    <i class="material-icons unliked" title="Like">favorite_border</i>
+                                </a>
+                                <a class="like-link">
+                                    <i class="material-icons liked" title="Unlike">favorite</i>
+                                </a>
+                            </span>
+                            <span class="num-of-likes">{{ post.num_of_likes }}</span>
+                        </span>
+                    </span>
+                    <span class="no-like">Login or Sign up to like post</span>
+                </div>
+            </div>
+        {% endfor %}
+
+        <nav aria-label="All posts">
+            <ul class="pagination justify-content-center">
+                {% if page_object.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; First</a>
+                        <a class="page-link" href="?page={{ page_object.previous_page_number }}">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                {% endif %}
+    
+                <li class="page-item current-item">
+                    <span class="current">
+                        Page {{ page_object.number }} of {{ page_object.paginator.num_pages }}
+                    </span>
+                </li>
+    
+                {% if page_object.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_object.next_page_number }}">Next</a>
+                        <a class="page-link" href="?page={{ page_object.paginator.num_pages }}">Last &raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row" id="followers-view">
+            {% if poster.id != user.id %}
+                <div class="follow">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <input class="followee" type="hidden" value="{{ poster.id }}">
+                        {% if is_following %}
+                            <button style="display: none;" class="btn btn-primary btn-primary-sm follow-btn">Follow {{ poster.username }} +</button>
+                            <button class="btn btn-primary btn-primary-sm unfollow-btn">Unfollow {{ poster.username }} +</button>
+                        {% else %}
+                            <button style="display: none;" class="btn btn-primary btn-primary-sm unfollow-btn">Unfollow {{ poster.username }} +</button>
+                            <button class="btn btn-primary btn-primary-sm follow-btn">Follow {{ poster.username }} +</button>
+                        {% endif %}
+                    </form>
+                </div>
+            {% endif %}
+
+            <h3 class="single-heading">Followers</h3>
+
+            {% for follower in followers %}
+                <div class="jumbotron all-followers-jumbotron" id="{{ post.id }}">
+                    <a title="View user's profile" href="{% url 'profile' follower.id %}" class="poster-container">
+                        <i class="material-icons poster-image">person</i>
+                        <span class="poster">{{ follower.username }}</span>
+                    </a>
+
+                    <div class="jumbotron content">
+                        <span>Data joined: {{follower.date_joined }}</span>
+                    </div>
+
+                    <div class="jumbotron content">
+                        <span>Last login: {{follower.last_login }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="row" id="following-view">
+            {% if poster.id != user.id %}
+                <div class="follow">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <input class="followee" type="hidden" value="{{ poster.id }}">
+                        {% if is_following %}
+                            <button style="display: none;" class="btn btn-primary btn-primary-sm follow-btn">Follow {{ poster.username }} +</button>
+                            <button class="btn btn-primary btn-primary-sm unfollow-btn">Unfollow {{ poster.username }} +</button>
+                        {% else %}
+                            <button style="display: none;" class="btn btn-primary btn-primary-sm unfollow-btn">Unfollow {{ poster.username }} +</button>
+                            <button class="btn btn-primary btn-primary-sm follow-btn">Follow {{ poster.username }} +</button>
+                        {% endif %}
+                    </form>
+                </div>
+            {% endif %}
+
+            <h3 class="single-heading">Following</h3>
+
+            {% for following in followings %}
+                <div class="jumbotron all-following-jumbotron" id="{{ post.id }}">
+                    <a title="View user's profile" href="{% url 'profile' following.id %}" class="poster-container">
+                        <i class="material-icons poster-image">person</i>
+                        <span class="poster">{{ following.username }}</span>
+                    </a>
+
+                    <div class="jumbotron content">
+                        <span>Data joined: {{ following.date_joined }}</span>
+                    </div>
+
+                    <div class="jumbotron content">
+                        <span>Last login: {{ following.last_login }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

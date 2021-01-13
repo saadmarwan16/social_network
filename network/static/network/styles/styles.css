@@ -1,0 +1,135 @@
+h2 {
+    padding-left: 25px;
+}
+
+.new-post-jumbotron, .edit-post-jumbotron, .all-posts-jumbotron, .all-following-jumbotron, .all-followers-jumbotron {
+    padding: 2rem;
+    margin: 0px 25px 25px 25px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.edit-post-jumbotron {
+    display: none;
+    position: fixed;
+    left: 25%;
+    width: 50%;
+    z-index: 1;
+    top: 180px;
+    margin: 0px;
+}
+
+@media (max-width: 900px) {
+    .edit-post-jumbotron {
+        left: 15%;
+        width: 70%;
+    }
+}
+
+@media (max-width: 576px) {
+    .edit-post-jumbotron {
+        left: 5%;
+        width: 90%;
+    }
+}
+
+.poster-container {
+    display: inline-flex;
+    padding: 5px;
+    height: 45px;
+}
+
+.poster-container:hover {
+    border: 2px solid;
+    text-decoration: none;
+}
+
+.poster-image {
+    font-size: 35px;
+    margin-right: 10px;
+}
+
+.poster {
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.edit-timestamp {
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+.content {
+    padding: 10px;
+    margin-bottom: 1rem;
+}
+
+.likes-comments {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.liked, .unliked, .comment {
+    color: #007bff;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.likes, .comments {
+    display: inline-flex;
+}
+
+.likes {
+    margin-right: 25px;
+}
+
+.like-container, .unlike-container {
+    cursor: pointer;
+}
+
+.no-like {
+    display: none;
+    position: relative;
+    top: 25px;
+    background: rgba(255, 0, 0, 0.3);
+    color: red;
+}
+
+.no-edit {
+    display: none;
+    text-align: center;
+    border-radius: 3px;
+    background: rgba(255, 0, 0, 0.3);
+    color: red;
+    margin-bottom: 15px;
+}
+
+.current-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+.current-item {
+    font-size: 18px;
+    padding: 5px;
+}
+
+.page-item {
+    display: inline-flex;
+}
+
+.page-link {
+    display: inline;
+}
+
+.edit-link {
+    color: #007bff !important;
+    cursor: pointer !important;
+}
+
+.edit-link:hover {
+    color: #0056b3 !important;
+    text-decoration: underline !important;
+}
