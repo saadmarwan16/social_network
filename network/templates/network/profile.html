@@ -121,7 +121,7 @@
             <h3 class="single-heading">Followers</h3>
 
             {% for follower in followers %}
-                <div class="jumbotron all-followers-jumbotron" id="{{ post.id }}">
+                <div class="jumbotron all-followers-jumbotron">
                     <a title="View user's profile" href="{% url 'profile' follower.id %}" class="poster-container">
                         <i class="material-icons poster-image">person</i>
                         <span class="poster">{{ follower.username }}</span>
@@ -159,7 +159,7 @@
             <h3 class="single-heading">Following</h3>
 
             {% for following in followings %}
-                <div class="jumbotron all-following-jumbotron" id="{{ post.id }}">
+                <div class="jumbotron all-following-jumbotron">
                     <a title="View user's profile" href="{% url 'profile' following.id %}" class="poster-container">
                         <i class="material-icons poster-image">person</i>
                         <span class="poster">{{ following.username }}</span>

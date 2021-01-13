@@ -29,10 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.querySelectorAll('.follow-btn').forEach(button => {
+
+        // A follow button is clicked
         button.addEventListener('click', event => {
             event.preventDefault();
             const follow = button.parentElement;
 
+            // Send a PUT request to update the database
             fetch('/follow', {
                 method: 'PUT',
                 body: JSON.stringify({
@@ -49,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     })
 
+    // Send a PUT request to update the database
     document.querySelectorAll('.unfollow-btn').forEach(button => {
         button.addEventListener('click', event => {
             event.preventDefault();

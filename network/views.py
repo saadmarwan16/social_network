@@ -16,22 +16,23 @@ def index(request):
     Load the home page
     """
 
+    # Get all the posts in a paginator form in the reverse order
     posts = Post.objects.order_by("-timestamp").all()
     paginator = Paginator(object_list=posts, per_page=10, allow_empty_first_page=True)
     page_number = request.GET.get('page')
     page_object = paginator.get_page(number=page_number)
     likes = list()
 
-    if str(request.user) != "AnonymousUser":
-        for post in page_object:
-            # Return whether user have liked post or not
-            try:
-                like = Like.objects.get(post=post, user=request.user)
-                likes.append(like.is_liked)
+    # if str(request.user) != "AnonymousUser":
+    #     for post in page_object:
+    #         # Return whether user have liked post or not
+    #         try:
+    #             like = Like.objects.get(post=post, user=request.user)
+    #             likes.append(like.is_liked)
 
-            # If user have never liked or unliked a post set it to not liked
-            except Like.DoesNotExist:
-                likes.append(False)
+    #         # If user have never liked or unliked a post set it to not liked
+    #         except Like.DoesNotExist:
+    #             likes.append(False)
 
     return render(request, "network/index.html", {
         "page_object": page_object,
@@ -44,6 +45,7 @@ def new_post(request):
     Create a new post and redirect the user to the home page
     """
 
+    # Get the content of the form and create a new post
     content = request.POST["content"]
     post = Post(content=content, poster=request.user)
     post.save()
@@ -56,31 +58,38 @@ def profile(request, poster_id):
     Load the profile of the user whom the user tried to access if available
     """
 
+    # Attempt to load the profile for a particular user
     try:
         poster = User.objects.get(pk=poster_id)
     except User.DoesNotExist:
         raise Http404("This user does not exist")
     
+    # Attempt to check whether a user follows another user
     try:
         Follow.objects.get(is_following=True, followee=poster, follower=request.user)
         is_following = True
+
+    # If record of two users does not exist then user is not following the poster
     except Follow.DoesNotExist:
         is_following = False
 
+    # Put posts into a paginator
     posts = Post.objects.filter(poster=poster).order_by("-timestamp")
     paginator = Paginator(object_list=posts, per_page=10, allow_empty_first_page=True)
     page_number = request.GET.get('page')
     page_object = paginator.get_page(number=page_number)
-    len(page_object)
 
+    # Get all the followers and following of the user whose profile is being viewed
     poster_following = poster.following.filter(follower_id=poster_id, is_following=True)
     poster_followers = poster.followers.filter(followee_id=poster_id, is_following=True)
     followers = list()
     followings = list()
 
+    # Get the user object for followers of the user whose profile is being viewed
     for follower in poster_followers:
         followers.append(User.objects.get(pk=follower.follower_id))
 
+    # Get the user object for following of the user whose profile is being viewed
     for following in poster_following:
         followings.append(User.objects.get(pk=following.followee_id))
 
@@ -101,14 +110,20 @@ def user_profile(request):
     Load the current user's profile page
     """
 
+    # If user attempt to view his profile and has not logged in then take the user to the login page, otherwise
+    # take the user to his profile page
     if (str(request.user) == "AnonymousUser"):
         return HttpResponseRedirect(reverse("login"))
-
     else:
         return HttpResponseRedirect(reverse("profile", args=(request.user.id,)))
 
 
 def login_view(request):
+    """
+    Logs a user in
+    """
+
+    # User to tries to login
     if request.method == "POST":
 
         # Attempt to sign user in
@@ -124,17 +139,30 @@ def login_view(request):
             return render(request, "network/login.html", {
                 "message": "Invalid username and/or password."
             })
+
+    # Usr tries to get the login page
     else:
         return render(request, "network/login.html")
 
 
 def logout_view(request):
+    """
+    Logs a user out
+    """
+
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
 def register(request):
+    """
+    Create a new user
+    """
+
+    # User tries to register for an account
     if request.method == "POST":
+
+        # Get the particulars the user inputted
         username = request.POST["username"]
         email = request.POST["email"]
         password = request.POST["password"]
@@ -165,17 +193,27 @@ def register(request):
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
+
+    # Users tries to get the register page
     else:
         return render(request, "network/register.html")
 
 
 def following(request):
+    """
+    Gets the posts made by users that the current user follow
+    """
+
+    # Get the users that the current user follows
     user = User.objects.get(pk=request.user.id)
     followings = user.following.filter(is_following=True)
+
+    # Get the id's of the users the current user follows
     user_followings = list()
     for following in followings:
         user_followings.append(following.followee_id)
 
+    # Put the posts in a paginated form
     following = User.objects.filter(pk__in=user_followings)
     posts = Post.objects.filter(poster__in=following).order_by("-timestamp")
     paginator = Paginator(object_list=posts, per_page=10, allow_empty_first_page=True)
@@ -188,6 +226,7 @@ def following(request):
 
 
 # API Views
+
 @csrf_exempt
 def like(request):
     """
@@ -298,12 +337,15 @@ def edit_post(request):
 
     data = JSONParser().parse(request)
 
+    # Try to get the post that the user is trying to edit
     try:
         post = Post.objects.get(pk=data["post_id"])
     except Post.DoesNotExist:
         raise Http404("This post does not exist")
 
     if data.get("post_content") is not None:
+
+        # Check if user didn't put any character in the edit form
         if len(data["post_content"]) == 0:
             return JsonResponse({"message": "Post must contain at least one character"}, status=201)
 
@@ -321,11 +363,14 @@ def follow(request):
     data = JSONParser().parse(request)
     followee = User.objects.get(pk=data["followee"])
 
+    # Attempt to get a follow object relationship between a follower and a followee
     try:
         follow = Follow.objects.get(is_following=False, followee=followee, follower=request.user)
         follow.is_following = True
         follow.save()
         return JsonResponse({"message": "Successful"}, status=201)
+
+    # If the follower and followee does not have a relationship create one
     except Follow.DoesNotExist:
         Follow.objects.create(is_following=True, followee=followee, follower=request.user)
         return JsonResponse({"message": "Successful"}, status=201)
