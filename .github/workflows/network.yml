@@ -14,5 +14,5 @@ jobs:
     - name: Run Tests
       run: |
         pip3 install --user django
-        pip3 install django_restframework
+        pip3 install djangorestframework
         python3 manage.py test
