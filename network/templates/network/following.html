@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+    Following - Social Network
+{% endblock %}
+
 {% block scripts %}
     <script src="{% static 'network/scripts/like.js' %}"></script>
     <script src="{% static 'network/scripts/main.js' %}"></script>
@@ -41,6 +45,8 @@
                 <span class="no-like" id="no-like{{ post.id }}">Login or Sign up to like post</span>
             </div>
         </div>
+    {% empty %}
+        <h4 class="empty">There are no posts</h4>
     {% endfor %}
 
     <nav aria-label="All posts">

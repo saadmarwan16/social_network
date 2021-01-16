@@ -1,24 +1,50 @@
-{% extends "network/layout.html" %}
+{% load static %}
 
-{% block body %}
+<!DOCTYPE html>
 
-    <h2>Login</h2>
+<html lang="en">
+    <head>
+        <title>Login - Social Network</title>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+        <link href="{% static 'network/logo/favicon.ico' %}" rel="icon">
 
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <link href="{% static 'network/styles/login.css' %}" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="logo-container">
+            <a title="Home" class="logo" href="{% url 'index' %}">
+                <div class="logo-image-container">
+                    <img class="logo-image" src="{% static 'network/logo/favicon.ico' %}">
+                </div>
+
+                <div class="brand-name">
+                    Network
+                </div>
+            </a>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+
+        <div class="container">
+            <h2>Login</h2>
+
+            {% if message %}
+                <div>{{ message }}</div>
+            {% endif %}
+
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="password" name="password" placeholder="Password">
+                </div>
+                <input class="btn btn-primary submit-btn" type="submit" value="Login">
+            </form>
+
+            Don't have an account? <a href="{% url 'register' %}">Register here.</a>
         </div>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </form>
-
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-
-{% endblock %}
+    </body>
+</html>

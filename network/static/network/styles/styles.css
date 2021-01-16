@@ -33,10 +33,14 @@ h2 {
     }
 }
 
-.poster-container {
+.poster-container, .poster-container-div {
     display: inline-flex;
     padding: 5px;
     height: 45px;
+}
+
+.poster-container-div {
+    color: #007bff;
 }
 
 .poster-container:hover {

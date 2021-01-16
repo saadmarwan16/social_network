@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+    Home - Socaial Network
+{% endblock %}
+
 {% block scripts %}
     <script src="{% static 'network/scripts/like.js' %}"></script>
     <script src="{% static 'network/scripts/main.js' %}"></script>
@@ -30,10 +34,17 @@
     <h2>All posts</h2>
     {% for post in page_object %}
         <div class="jumbotron all-posts-jumbotron" id="{{ post.id }}">
-            <a title="View user's profile" href="{% url 'profile' post.poster.id %}" class="poster-container">
-                <i class="material-icons poster-image">person</i>
-                <span class="poster">Posted by {{ post.poster }}</span>
-            </a>
+            {% if user.is_authenticated %}
+                <a title="View user's profile" href="{% url 'profile' post.poster.id %}" class="poster-container">
+                    <i class="material-icons poster-image">person</i>
+                    <span class="poster">Posted by {{ post.poster }}</span>
+                </a>
+            {% else %}
+                <div class="poster-container-div">
+                    <i class="material-icons poster-image">person</i>
+                    <span class="poster">Posted by {{ post.poster }}</span>
+                </div>
+            {% endif %}
 
             <div class="edit-timestamp">
                 {% if user == post.poster %}
@@ -47,18 +58,12 @@
             <div class="likes-comments">
                 <span class="likes">
                     <span class="like-status" id="like{{ post.id }}">
-                        {% if user.is_authenticated %}
                             <a class="unlike-link" id="unlike-icon{{ post.id }}">
                                 <i class="material-icons unliked" title="Like">favorite_border</i>
                             </a>
                             <a class="like-link" id="like-icon{{ post.id }}">
                                 <i class="material-icons liked" title="Unlike">favorite</i>
                             </a>
-                        {% else %}
-                            <a class="unlike-link" id="unlike-icon{{ post.id }}">
-                                <i class="material-icons unliked" title="Like">favorite_border</i>
-                            </a>
-                        {% endif %}
                     </span>
                     <span class="num-of-likes" id="num-like{{ post.id }}">{{ post.num_of_likes }}</span>
                 </span>
@@ -79,6 +84,8 @@
                 </form>
             </div>
         </div>
+    {% empty %}
+        <h4 class="empty">There are no posts</h4>
     {% endfor %}
 
     <nav aria-label="All posts">

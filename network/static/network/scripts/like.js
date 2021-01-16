@@ -34,6 +34,10 @@ function isLiked(post) {
         // If the user clicks on the already liked post dislike it, otherwise like it
         if (event.target.className === 'material-icons liked') {
 
+            // Show the like icon and hide the unlike icon
+            likeLink.style.display = 'none';
+            unLikeLink.style.display = 'block';
+
             // Send a PUT request to update the database
             fetch('/like', {
                 method: 'PUT',
@@ -49,21 +53,17 @@ function isLiked(post) {
                 // a must sign in message
                 if (result.status === "Successful") {
 
-                    // Show the like icon and hide the unlike icon
-                    likeLink.style.display = 'none';
-                    unLikeLink.style.display = 'block';
-
                     // Update the number of likes on the client side
                     let numOfLikes = post.querySelector(`.num-of-likes`).innerText;
                     numOfLikes--;
                     post.querySelector(`.num-of-likes`).innerText = numOfLikes;
-                } else if (result.status === "Anonymous User") {
-                    
-                    // Display a must login or sign up message
-                    post.querySelector('.no-like').style.display = 'inline';
                 }
             })
         } else if (event.target.className === 'material-icons unliked') {
+
+            // Show the unlike icon and hide the like icon
+            unLikeLink.style.display = 'none';
+            likeLink.style.display = 'block';
 
             // Send a PUT request to update the database
             fetch('/like', {
@@ -80,15 +80,14 @@ function isLiked(post) {
                 // a must sign in message
                 if (result.status === "Successful") {
 
-                    // Show the unlike icon and hide the like icon
-                    unLikeLink.style.display = 'none';
-                    likeLink.style.display = 'block';
-                    
                     // Update the number of likes on the client side
                     let numOfLikes = post.querySelector(`.num-of-likes`).innerText;
                     numOfLikes++;
                     post.querySelector(`.num-of-likes`).innerText = numOfLikes;
                 } else if (result.status === "Anonymous User") {
+
+                    // If a user has not logged in reverse the like status
+                    setTimeout(() => unLike(likeLink, unLikeLink), 750);
 
                     // Display a must login or sign up message
                     post.querySelector('.no-like').style.display = 'inline';
@@ -103,4 +102,11 @@ function hideNoLike(post) {
     
     // Display a must login or sign up message
     post.querySelector('.no-like').style.display = 'none';
+}
+
+function unLike(likeLink, unLikeLink) {
+
+    // Change the like status of a post if a user is not logged in and tries to like a post
+    likeLink.style.display = 'none';
+    unLikeLink.style.display = 'block';
 }

@@ -33,7 +33,7 @@
     font-size: 20px;
 } */
 
-.follow, .single-heading {
+.follow, .empty, .single-heading {
     /* display: flex; */
     margin: 15px 25px;
 }

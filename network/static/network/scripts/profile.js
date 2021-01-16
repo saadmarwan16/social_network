@@ -44,9 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(response => response.json())
             .then(results => {
+
+                // User tries to follow a user he / she is not already following
                 if (results.message === 'Successful') {
-                    button.style.display = 'none'
-                    follow.querySelector('.unfollow-btn').style.display = 'inline-block';
+                    
+                    document.querySelectorAll('.follow-btn').forEach(followBtn => {
+                        followBtn.style.display = 'none';
+                    })
+
+                    document.querySelectorAll('.unfollow-btn').forEach(unFollowBtn => {
+                        unFollowBtn.style.display = 'inline-block';
+                    })
                 }
             })
         })
@@ -66,9 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(response => response.json())
             .then(results => {
+
+                // User tries to unfollow a user he / she is already following
                 if (results.message === 'Successful') {
-                    button.style.display = 'none';
-                    follow.querySelector('.follow-btn').style.display = 'inline-block';
+
+                    document.querySelectorAll('.unfollow-btn').forEach(unFollowBtn => {
+                        unFollowBtn.style.display = 'none';
+                    })
+
+                    document.querySelectorAll('.follow-btn').forEach(followBtn => {
+                        followBtn.style.display = 'inline-block';
+                    })
                 }
             })
         })

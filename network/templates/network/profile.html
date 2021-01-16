@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+    Profile - Social Network
+{% endblock %}
+
 {% block styles %}
     <link href="{% static 'network/styles/logo.css' %}" rel="stylesheet">
     <link href="{% static 'network/styles/profile.css' %}" rel="stylesheet">
@@ -40,7 +44,7 @@
 
                 <div class="edit-timestamp">
                     {% if user == post.poster %}
-                        <span style="margin-right: 5px;"><a href="#">Edit</a></span>
+                        <span style="margin-right: 5px;"><a class="edit-link">Edit</a></span>
                     {% endif %}
                     <span>{{ post.timestamp }}</span>
                 </div>
@@ -63,7 +67,27 @@
                     </span>
                     <span class="no-like">Login or Sign up to like post</span>
                 </div>
+
+                <div class="jumbotron edit-post-jumbotron alert-dismissible">
+                    <button type="button" class="close cancel-btn">&times;</button>
+                    <h4>Edit post</h4>
+                    <div class="no-edit"></div>
+                    <form class="edit-form" method="post">
+                        {% csrf_token %}
+            
+                        <div class="form-group">
+                            <textarea name="content" maxlength="2560" class="form-control post" rows="3">{{ post.content }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary save-btn">Save</button>
+                    </form>
+                </div>
             </div>
+        {% empty %}
+            {% if user == poster %}
+                <h4 class="empty">You have no posts</h4>
+            {% else %}
+                <h4 class="empty">{{ poster }} have no posts</h4>
+            {% endif %}
         {% endfor %}
 
         <nav aria-label="All posts">
@@ -99,7 +123,7 @@
         </nav>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="following-followers">
         <div class="row" id="followers-view">
             {% if poster.id != user.id %}
                 <div class="follow">
@@ -135,6 +159,12 @@
                         <span>Last login: {{follower.last_login }}</span>
                     </div>
                 </div>
+            {% empty %}
+                {% if user == poster %}
+                    <h4 class="empty">You have no following</h4>
+                {% else %}
+                    <h4 class="empty">{{ poster.username }} have no following</h4>
+                {% endif %}
             {% endfor %}
         </div>
         
@@ -173,6 +203,12 @@
                         <span>Last login: {{ following.last_login }}</span>
                     </div>
                 </div>
+            {% empty %}
+                {% if user == poster %}
+                    <h4 class="empty">You have no following</h4>
+                {% else %}
+                    <h4 class="empty">{{ poster.username }} have no following</h4>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

@@ -1,0 +1,37 @@
+.logo-container {
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+}
+
+.logo, .logo-image-container, .brand-name {
+    display: inline-flex;
+    justify-content: center;
+}
+
+.logo {
+    padding: .5em;
+    height: 48px;
+}
+
+.logo-image-container, .brand-name {
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-name {
+    margin-left: 1em;
+}
+
+.logo:hover, .submit-btn:hover {
+    transform: scale(1.1);
+}
+
+.submit-btn {
+    margin-bottom: .5em;
+}
+
+.logo:hover {
+    border: 2px solid;
+    text-decoration: none;
+}
