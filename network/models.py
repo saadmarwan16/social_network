@@ -6,16 +6,39 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username}"
 
-    def is_password_valid(self):
+    def is_password_length_valid(self):
         """
-        Returns true password has at least one uppercase, at least one lower case, at least one digit and
-        is at least eight character long
+        Returns true if password is at least eight character long
         """
 
-        return (any(c.isupper() for c in self.password) and any(c.islower() for c in self.password)
-            and any(c.isdigit() for c in self.password) and len(self.password) >= 8)
+        return len(self.password) >= 8
+
+    def do_upper_in_password(self):
+        """
+        Returns true if password contains at least one uppercase else false
+        """ 
+
+        return any(c.isupper() for c in self.password)
+
+    def do_lower_in_password(self):
+        """
+        Returns if true if password contains at least one lower case else false
+        """
+
+        return any(c.islower() for c in self.password)
+
+    def do_digit_in_password(self):
+        """
+        Returns if true if password contains at least one digit else false
+        """
+
+        return any(c.isdigit() for c in self.password)
 
     def do_passwords_match(self, confirmation):
+        """
+        Returns true if passwords match else false
+        """
+
         return self.password == confirmation
 
 

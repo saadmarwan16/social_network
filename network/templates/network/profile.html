@@ -24,7 +24,7 @@
                 <div class="jumbotron posts-jumb" id="single-posts">Posts<small class="profile-num">{{ posts_count }}</small></div>
             </div>
             <div class="col-4 followers">
-                <div class="jumbotron followers-jumb" id="single-followers">Followers<small class="profile-num">{{ followers_count }}</small></div>
+                <div class="jumbotron followers-jumb" id="single-followers">Followers<small id="followers-count" class="profile-num">{{ followers_count }}</small></div>
             </div>
             <div class="col-4 following">
                 <div class="jumbotron following-jumb" id="single-following">Following<small class="profile-num">{{ followee_count }}</small></div>
@@ -144,28 +144,30 @@
 
             <h3 class="single-heading">Followers</h3>
 
-            {% for follower in followers %}
-                <div class="jumbotron all-followers-jumbotron">
-                    <a title="View user's profile" href="{% url 'profile' follower.id %}" class="poster-container">
-                        <i class="material-icons poster-image">person</i>
-                        <span class="poster">{{ follower.username }}</span>
-                    </a>
+            <div class="all-followers-container">
+                {% for follower in followers %}
+                    <div class="jumbotron all-followers-jumbotron">
+                        <a title="View user's profile" href="{% url 'profile' follower.id %}" class="poster-container">
+                            <i class="material-icons poster-image">person</i>
+                            <span class="poster">{{ follower.username }}</span>
+                        </a>
 
-                    <div class="jumbotron content">
-                        <span>Data joined: {{follower.date_joined }}</span>
-                    </div>
+                        <div class="jumbotron content">
+                            <span>Data joined: {{follower.date_joined }}</span>
+                        </div>
 
-                    <div class="jumbotron content">
-                        <span>Last login: {{follower.last_login }}</span>
+                        <div class="jumbotron content">
+                            <span>Last login: {{follower.last_login }}</span>
+                        </div>
                     </div>
-                </div>
-            {% empty %}
-                {% if user == poster %}
-                    <h4 class="empty">You have no following</h4>
-                {% else %}
-                    <h4 class="empty">{{ poster.username }} have no following</h4>
-                {% endif %}
-            {% endfor %}
+                {% empty %}
+                    {% if user == poster %}
+                        <h4 class="empty">You have no following</h4>
+                    {% else %}
+                        <h4 class="empty">{{ poster.username }} have no following</h4>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
         
         <div class="row" id="following-view">

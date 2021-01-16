@@ -27,6 +27,13 @@
     transform: scale(1.1);
 }
 
+.message {
+    color:rgb(95, 10, 10);
+    background-color: rgba(255, 16, 16, 0.5);
+    border-radius: 3px;
+    padding-left: 1em;
+}
+
 .submit-btn {
     margin-bottom: .5em;
 }
@@ -34,4 +41,14 @@
 .logo:hover {
     border: 2px solid;
     text-decoration: none;
+}
+
+.password-validation {
+    display: none;
+}
+
+#pwd-8-char, #pwd-uppercase, #pwd-lowercase, #pwd-digit, #pwd-match {
+    margin-bottom: 8px;
+    border-radius: 3px;
+    padding-left: 1em;
 }

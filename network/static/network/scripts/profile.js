@@ -55,6 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.unfollow-btn').forEach(unFollowBtn => {
                         unFollowBtn.style.display = 'inline-block';
                     })
+
+                    // Reduce the number of followers a user has client side
+                    let followerCount = document.querySelector('#followers-count').innerText;
+                    followerCount++;
+                    document.querySelector('#followers-count').innerText = followerCount;
                 }
             })
         })
@@ -62,6 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Send a PUT request to update the database
     document.querySelectorAll('.unfollow-btn').forEach(button => {
+
+        // A unfollow button is clicked
         button.addEventListener('click', event => {
             event.preventDefault();
             const follow = button.parentElement;
@@ -85,6 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.querySelectorAll('.follow-btn').forEach(followBtn => {
                         followBtn.style.display = 'inline-block';
                     })
+
+                    // Reduce the number of followers a user has client side
+                    let followerCount = document.querySelector('#followers-count').innerText;
+                    followerCount--;
+                    document.querySelector('#followers-count').innerText = followerCount;
                 }
             })
         })

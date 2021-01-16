@@ -11,6 +11,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
         <link href="{% static 'network/styles/login.css' %}" rel="stylesheet">
+
+        <script src="{% static 'network/scripts/register.js' %}"></script>
     </head>
 
     <body>
@@ -30,22 +32,29 @@
             <h2>Register</h2>
 
             {% if message %}
-                <div>{{ message }}</div>
+                <p class="message">{{ message }}</p>
             {% endif %}
 
             <form action="{% url 'register' %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+                    <input class="form-control" required autofocus type="text" name="username" placeholder="Username">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="email" name="email" placeholder="Email Address">
+                    <input class="form-control" required type="email" name="email" placeholder="Email Address">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="password" name="password" placeholder="Password">
+                    <input class="form-control pwd password" required type="password" name="password" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                    <input class="form-control pwd confirm" required type="password" name="confirmation" placeholder="Confirm Password">
+                </div>
+                <div class="form-group password-validation">
+                    <p id="pwd-8-char">Password must be at least 8 characters long</p>
+                    <p id="pwd-uppercase">Password must contain at least one uppercase character</p>
+                    <p id="pwd-lowercase">Password must contain at least one lowercase character</p>
+                    <p id="pwd-digit">Password must contain at least one digit</p>
+                    <p id="pwd-match">Passwords must match</p>
                 </div>
                 <input class="btn btn-primary submit-btn" type="submit" value="Register">
             </form>

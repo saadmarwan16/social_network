@@ -23,17 +23,6 @@ def index(request):
     page_object = paginator.get_page(number=page_number)
     likes = list()
 
-    # if str(request.user) != "AnonymousUser":
-    #     for post in page_object:
-    #         # Return whether user have liked post or not
-    #         try:
-    #             like = Like.objects.get(post=post, user=request.user)
-    #             likes.append(like.is_liked)
-
-    #         # If user have never liked or unliked a post set it to not liked
-    #         except Like.DoesNotExist:
-    #             likes.append(False)
-
     return render(request, "network/index.html", {
         "page_object": page_object,
         "likes": likes
@@ -168,16 +157,34 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
 
-        user = User.objects.create_user(username, email, password)
+        user = User(username=username, email=email, password=password)
 
-        # Ensure password is valid
-        if not user.is_password_valid():
+        # Ensure password has a valid length
+        if not user.is_password_length_valid():
             return render(request, "network/register.html", {
-                "message": "Password must be at least 8 characters long, contain one uppercase, one lower case, one digit"
+                "message": "Password must be at least 8 characters long"
+            })
+        
+        # Ensure password contain at least one uppercase character
+        elif not user.do_upper_in_password():
+            return render(request, "network/register.html", {
+                "message": "Password must contain at least one uppercase"
+            })
+
+        # Ensure password contain at least one lowercase character
+        elif not user.do_lower_in_password():
+            return render(request, "network/register.html", {
+                "message": "Password must contain at least one lowercase"
+            })
+
+        # Ensure password contain at least one digit
+        elif not user.do_digit_in_password():
+            return render(request, "network/register.html", {
+                "message": "Password must contain at least one digit"
             })
 
         # Ensure password matches confirmation
-        elif not user.do_passwords_match:
+        elif not user.do_passwords_match(confirmation):
             return render(request, "network/register.html", {
                 "message": "Passwords must match."
             })
@@ -185,8 +192,7 @@ def register(request):
 
         # Attempt to create new user
         try:
-            # user = User.objects.create_user(username, email, password)
-            user.save()
+            user = User.objects.create_user(username, email, password)
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
