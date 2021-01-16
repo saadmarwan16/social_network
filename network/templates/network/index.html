@@ -27,7 +27,7 @@
         </div>
     {% endif %}
 
-    <h2>All posts</h2>}
+    <h2>All posts</h2>
     {% for post in page_object %}
         <div class="jumbotron all-posts-jumbotron" id="{{ post.id }}">
             <a title="View user's profile" href="{% url 'profile' post.poster.id %}" class="poster-container">
